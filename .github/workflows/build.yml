@@ -13,12 +13,13 @@ jobs:
       - name: Checkout Web
         uses: actions/checkout@v3
         with:
-          repository: cernbox/web
+          repository: javfg/web
           path: web
+          token: ${{ secrets.GH_TOKEN }}
       - name: Checkout SDK
         uses: actions/checkout@v3
         with:
-          repository: cernbox/owncloud-sdk
+          repository: javfg/owncloud-sdk
           path: owncloud-sdk
       - name: Install node
         uses: actions/setup-node@v3
@@ -49,3 +50,8 @@ jobs:
           draft: false
           prerelease: false
           files: release/web.tar.gz
+      - name: Create tag in web repo
+        run: |
+          cd web
+          git tag ${GITHUB_REF/refs\/tags\//}
+          git push --tags
